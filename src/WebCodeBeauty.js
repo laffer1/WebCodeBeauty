@@ -174,12 +174,12 @@ var WebCodeBeauty = (function () {
     };
 
     WebCodeBeauty.prototype.json = function (text, step) {
-        var step = step ? step : this.step;
+        var stepLevel = step ? step : this.step;
 
         if (typeof JSON === 'undefined') return text;
 
-        if (typeof text === 'string') return JSON.stringify(JSON.parse(text), null, step);
-        if (typeof text === 'object') return JSON.stringify(text, null, step);
+        if (typeof text === 'string') return JSON.stringify(JSON.parse(text), null, stepLevel);
+        if (typeof text === 'object') return JSON.stringify(text, null, stepLevel);
 
         return text; // text is not string nor object
     };
@@ -366,7 +366,6 @@ var WebCodeBeauty = (function () {
         return text.replace(/\s{1,}/g, " ").replace(/\s{1,}\(/, "(").replace(/\s{1,}\)/, ")");
     };
 
-    WebCodeBeauty = new WebCodeBeauty();
-    return WebCodeBeauty;
+    return new WebCodeBeauty();
 })();
 

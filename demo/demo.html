@@ -23,6 +23,10 @@ document.write(WebCodeBeauty.json('{"Data":"Test", "Foo":123, "bar": [ "baz", "b
 <pre>
 <script type="text/javascript">document.write(htmlEncode(WebCodeBeauty.xml('<data><mynode><foo/></mynode><blah></blah></data>')));</script>
 </pre>
+<h1>XML minify</h1>
+<pre>
+<script type="text/javascript">document.write(htmlEncode(WebCodeBeauty.xmlmin("<data>\n<mynode>\n<foo/>\n <!-- i am a comment --></mynode>\n<blah>\n</blah>\n</data>", false)));</script>
+</pre>
 <h1>CSS</h1>
 <pre>
 <script type="text/javascript">
