@@ -4,7 +4,7 @@
   ],
   "name": "WebCodeBeauty",
   "description": "Pretty print CSS, JSON, SQL and XML",
-  "version": "1.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/laffer1/WebCodeBeauty",
   "repository": {
     "type": "git",
