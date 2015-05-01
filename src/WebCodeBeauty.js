@@ -1,10 +1,9 @@
 /**
-* vkBeautify - javascript plugin to pretty-print or minify text in XML, JSON, CSS and SQL formats.
+* WebCodeBeauty - javascript plugin to pretty-print or minify text in XML, JSON, CSS and SQL formats.
 *  
-* Version - 0.99.00.beta 
+* Version - 1.0
+ * Copyright (c) 2015 Lucas Holt
 * Copyright (c) 2012 Vadim Kiryukhin
-* vkiryukhin @ gmail.com
-* http://www.eslinstructor.net/vkbeautify/
 * 
 * Dual licensed under the MIT and GPL licenses:
 *   http://www.opensource.org/licenses/mit-license.php
