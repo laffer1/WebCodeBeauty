@@ -16,10 +16,10 @@ var WebCodeBeauty = (function () {
         var space = '    ';
 
         if (isNaN(parseInt(step))) {
-        // argument is string
+            // argument is string
             space = step;
         } else {
-        // argument is integer
+            // argument is integer
             switch (step) {
                 case 1:
                     space = ' ';
@@ -140,46 +140,49 @@ var WebCodeBeauty = (function () {
     WebCodeBeauty.prototype.json = function (text, step) {
         var stepLevel = step ? step : this.step;
 
-        if (typeof JSON === 'undefined') return text;
+        if (typeof JSON === 'undefined') {
+            return text;
+        }
 
-        if (typeof text === 'string') return JSON.stringify(JSON.parse(text), null, stepLevel);
-        if (typeof text === 'object') return JSON.stringify(text, null, stepLevel);
+        if (typeof text === 'string') {
+            return JSON.stringify(JSON.parse(text), null, stepLevel);
+        }
+
+        if (typeof text === 'object') {
+            return JSON.stringify(text, null, stepLevel);
+        }
 
         return text;
     };
 
     WebCodeBeauty.prototype.css = function (text, step) {
-
         var ar = text.replace(/\s+/g, ' ')
-                        .replace(/\{/g, '{~::~')
-                        .replace(/}/g, '~::~}~::~')
-                        .replace(/;/g, ';~::~')
-                        .replace(/\/\*/g, '~::~/*')
-                        .replace(/\*\//g, '*/~::~')
-                        .replace(/~::~\s*~::~/g, '~::~')
-                        .split('~::~'),
-                len = ar.length,
-                deep = 0,
-                str = '',
-                shift = step ? createShiftArr(step) : this.shift;
+                .replace(/\{/g, '{~::~')
+                .replace(/}/g, '~::~}~::~')
+                .replace(/;/g, ';~::~')
+                .replace(/\/\*/g, '~::~/*')
+                .replace(/\*\//g, '*/~::~')
+                .replace(/~::~\s*~::~/g, '~::~')
+                .split('~::~');
+        var len = ar.length;
+        var deep = 0;
+        var str = '';
+        var shift = step ? createShiftArr(step) : this.shift;
 
-        for (var ix = 0; ix < len; ix++) {
-
-            if (/\{/.exec(ar[ix])) {
-                str += shift[deep++] + ar[ix];
-            } else if (/}/.exec(ar[ix])) {
-                str += shift[--deep] + ar[ix];
-            } else if (/\*\\/.exec(ar[ix])) {
-                str += shift[deep] + ar[ix];
+        for (var i = 0; i < len; i++) {
+            if (/\{/.exec(ar[i])) {
+                str += shift[deep++] + ar[i];
+            } else if (/}/.exec(ar[i])) {
+                str += shift[--deep] + ar[i];
+            } else if (/\*\\/.exec(ar[i])) {
+                str += shift[deep] + ar[i];
             }
             else {
-                str += shift[deep] + ar[ix];
+                str += shift[deep] + ar[i];
             }
         }
         return str.replace(/^\n+/, '');
     };
-
-//----------------------------------------------------------------------------
 
     function isSubQuery(str, parenthesisLevel) {
         return parenthesisLevel - (str.replace(/\(/g, '').length - str.replace(/\)/g, '').length );
