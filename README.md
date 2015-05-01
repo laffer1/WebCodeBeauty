@@ -21,10 +21,10 @@ the MIT and GPL licenses:
 
    **Pretty print**
 
-        vkbeautify.xml(text [,indent_pattern]);
-        vkbeautify.json(text [,indent_pattern]);
-        vkbeautify.css(text [,indent_pattern]);
-        vkbeautify.sql(text [,indent_pattern]);
+       WebCodeBeauty.xml(text [,indent_pattern]);
+       WebCodeBeauty.json(text [,indent_pattern]);
+       WebCodeBeauty.css(text [,indent_pattern]);
+       WebCodeBeauty.sql(text [,indent_pattern]);
 
         @text - String; text to beatufy;
         @indent_pattern - Integer | String;
@@ -32,10 +32,10 @@ the MIT and GPL licenses:
                 String:   character string to visualize indentation ( can also be a set of white spaces )
   **Minify**
 
-        vkbeautify.xmlmin(text [,preserve_comments]);
-        vkbeautify.jsonmin(text);
-        vkbeautify.cssmin(text [,preserve_comments]);
-        vkbeautify.sqlmin(text);
+       WebCodeBeauty.xmlmin(text [,preserve_comments]);
+       WebCodeBeauty.jsonmin(text);
+       WebCodeBeauty.cssmin(text [,preserve_comments]);
+       WebCodeBeauty.sqlmin(text);
 
         @text - String; text to minify;
         @preserve_comments - Bool; [optional];
@@ -43,13 +43,13 @@ the MIT and GPL licenses:
 
    **Examples**
    
-        vkbeautify.xml(text); // pretty print XML
-        vkbeautify.json(text, 4 ); // pretty print JSON
-        vkbeautify.css(text, '. . . .'); // pretty print CSS
-        vkbeautify.sql(text, '----'); // pretty print SQL
+       WebCodeBeauty.xml(text); // pretty print XML
+       WebCodeBeauty.json(text, 4 ); // pretty print JSON
+       WebCodeBeauty.css(text, '. . . .'); // pretty print CSS
+       WebCodeBeauty.sql(text, '----'); // pretty print SQL
 
-        vkbeautify.xmlmin(text, true);// minify XML, preserve comments
-        vkbeautify.jsonmin(text);// minify JSON
-        vkbeautify.cssmin(text);// minify CSS, remove comments ( default )
-        vkbeautify.sqlmin(text);// minify SQL
+       WebCodeBeauty.xmlmin(text, true);// minify XML, preserve comments
+       WebCodeBeauty.jsonmin(text);// minify JSON
+       WebCodeBeauty.cssmin(text);// minify CSS, remove comments ( default )
+       WebCodeBeauty.sqlmin(text);// minify SQL
 

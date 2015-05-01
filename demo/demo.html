@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>WebCodeBeauty Demo</title>
+    <script type="text/javascript" src="../src/WebCodeBeauty.js"></script>
+    <script type="text/javascript">
+        function htmlEncode( html ) {
+            return document.createElement( 'a' ).appendChild(
+                document.createTextNode( html ) ).parentNode.innerHTML;
+        };
+    </script>
+</head>
+
+<body>
+<h1>JSON</h1>
+<pre>
+<script type="text/javascript">
+document.write(WebCodeBeauty.json('{"Data":"Test", "Foo":123, "bar": [ "baz", "baa", "boo"] }'));
+</script>
+</pre>
+<h1>XML</h1>
+<pre>
+<script type="text/javascript">document.write(htmlEncode(WebCodeBeauty.xml('<data><mynode><foo/></mynode><blah></blah></data>')));</script>
+</pre>
+<h1>CSS</h1>
+<pre>
+<script type="text/javascript">
+document.write(WebCodeBeauty.css('.body{ color: blue; background: white; text-align: left; font-size: 10px }  #foo { color: red }'));
+</script>
+</pre>
+<h1>SQL</h1>
+<pre>
+<script type="text/javascript">
+document.write(WebCodeBeauty.sql('SELECT * FROM CLUE LEFT JOIN NONE on CLUE.id = NONE.clue_id WHERE clue.name like \'%has none%\';'));
+</script>
+</pre>
+</body>
+</html>
