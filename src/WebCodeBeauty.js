@@ -13,12 +13,13 @@
 var WebCodeBeauty = (function () {
 
     function createShiftArr(step) {
-
         var space = '    ';
 
-        if (isNaN(parseInt(step))) {  // argument is string
+        if (isNaN(parseInt(step))) {
+        // argument is string
             space = step;
-        } else { // argument is integer
+        } else {
+        // argument is integer
             switch (step) {
                 case 1:
                     space = ' ';
@@ -60,8 +61,8 @@ var WebCodeBeauty = (function () {
         }
 
         var shift = ['\n']; // array of shifts
-        for (var ix = 0; ix < 100; ix++) {
-            shift.push(shift[ix] + space);
+        for (var i = 0; i < 100; i++) {
+            shift.push(shift[i] + space);
         }
         return shift;
     }
@@ -73,10 +74,10 @@ var WebCodeBeauty = (function () {
 
     WebCodeBeauty.prototype.xml = function (text, step) {
 
-        var ar = text.replace(/>\s*</g, "><")
-                        .replace(/</g, "~::~<")
-                        .replace(/\s*xmlns:/g, "~::~xmlns:")
-                        .replace(/\s*xmlns=/g, "~::~xmlns=")
+        var ar = text.replace(/>\s*</g, '><')
+                        .replace(/</g, '~::~<')
+                        .replace(/\s*xmlns:/g, '~::~xmlns:')
+                        .replace(/\s*xmlns=/g, '~::~xmlns=')
                         .split('~::~'),
                 len = ar.length,
                 inComment = false,
@@ -128,8 +129,7 @@ var WebCodeBeauty = (function () {
             // xmlns //
             if (ar[ix].search(/xmlns:/) > -1 || ar[ix].search(/xmlns=/) > -1) {
                 str += shift[deep] + ar[ix];
-            }
-            else {
+            } else {
                 str += ar[ix];
             }
         }
@@ -145,7 +145,7 @@ var WebCodeBeauty = (function () {
         if (typeof text === 'string') return JSON.stringify(JSON.parse(text), null, stepLevel);
         if (typeof text === 'object') return JSON.stringify(text, null, stepLevel);
 
-        return text; // text is not string nor object
+        return text;
     };
 
     WebCodeBeauty.prototype.css = function (text, step) {
@@ -187,8 +187,7 @@ var WebCodeBeauty = (function () {
 
     function split_sql(str, tab) {
 
-        return str.replace(/\s+/g, " ")
-
+        return str.replace(/\s+/g, ' ')
                 .replace(/ AND /ig, "~::~" + tab + tab + "AND ")
                 .replace(/ BETWEEN /ig, "~::~" + tab + "BETWEEN ")
                 .replace(/ CASE /ig, "~::~" + tab + "CASE ")
@@ -197,7 +196,6 @@ var WebCodeBeauty = (function () {
                 .replace(/ FROM /ig, "~::~FROM ")
                 .replace(/ GROUP\s+BY/ig, "~::~GROUP BY ")
                 .replace(/ HAVING /ig, "~::~HAVING ")
-            //.replace(/ SET /ig," SET~::~")
                 .replace(/ IN /ig, " IN ")
 
                 .replace(/ JOIN /ig, "~::~JOIN ")
@@ -220,9 +218,6 @@ var WebCodeBeauty = (function () {
                 .replace(/ WHEN /ig, "~::~" + tab + "WHEN ")
                 .replace(/ WHERE /ig, "~::~WHERE ")
                 .replace(/ WITH /ig, "~::~WITH ")
-
-            //.replace(/\,\s{0,}\(/ig,",~::~( ")
-            //.replace(/\,/ig,",~::~"+tab+tab+"")
 
                 .replace(/ ALL /ig, " ALL ")
                 .replace(/ AS /ig, " AS ")
@@ -317,11 +312,11 @@ var WebCodeBeauty = (function () {
                 : text.replace(/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g, '');
 
         return str.replace(/\s+/g, ' ')
-                .replace(/\{\s+/g, "{")
-                .replace(/}\s+/g, "}")
-                .replace(/;\s+/g, ";")
-                .replace(/\/\*\s+/g, "/*")
-                .replace(/\*\/\s+/g, "*/");
+                .replace(/\{\s+/g, '{')
+                .replace(/}\s+/g, '}')
+                .replace(/;\s+/g, ';')
+                .replace(/\/\*\s+/g, '/*')
+                .replace(/\*\/\s+/g, '*/');
     };
 
     WebCodeBeauty.prototype.sqlmin = function (text) {
@@ -330,4 +325,3 @@ var WebCodeBeauty = (function () {
 
     return new WebCodeBeauty();
 })();
-
