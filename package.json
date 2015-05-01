@@ -1,0 +1,41 @@
+{
+  "name": "WebCodeBeauty",
+  "description": "Pretty print CSS, JSON, SQL and XML code",
+  "version": "1.0",
+  "homepage": "http://github.com/laffer1/WebCodeBeauty",
+  "author": [
+	"Lucas Holt <luke@foolishgames.com>",
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/laffer1/angular-google-analytics.git"
+  },
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/laffer1/WebCodeBeauty/blob/master/LICENSE"
+    },
+    {
+       "type": "GPLv2"
+    }
+  ],  
+  "dependencies": {},
+  "devDependencies": {
+    "karma": "~ 0.8.0",
+    "grunt": ">= 0.4.0",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-release": "~0.3.3",
+    "grunt-conventional-changelog": "0.0.12"
+  },
+  "scripts": {
+    "test": "grunt travis",
+    "test-single": "karma start test/karma.conf.js --single-run --browsers Chrome",
+    "test-server": "karma start test/karma.conf.js --browsers Chrome"
+  }
+}
+

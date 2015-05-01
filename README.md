@@ -1,13 +1,15 @@
-# vkBeautify
+# WebCodeBeauty
 
 javascript  plugin to **pretty-print** or **minify**
 text in **XML**, **JSON**, **CSS** and **SQL** formats.
 
-**Version** - 0.98.00.beta
+**Version** - 1.0
 
-**Copyright** (c) 2012 Vadim Kiryukhin ( vkiryukhin @ gmail.com )
+**Copyright** 
+(c) 2015 Lucas Holt (luke@foolishgames.com)
+(c) 2012 Vadim Kiryukhin ( vkiryukhin @ gmail.com )
 
-**Home page:** [http://www.eslinstructor.net/vkbeautify/](http://www.eslinstructor.net/vkbeautify/) 
+Forked from vkBeautify, originally at [http://www.eslinstructor.net/vkbeautify/](http://www.eslinstructor.net/vkbeautify/) 
 
 **License:** Dual licensed under
 the MIT and GPL licenses:
