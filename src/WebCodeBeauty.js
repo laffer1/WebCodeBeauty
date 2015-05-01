@@ -8,40 +8,6 @@
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
- *
- *   Pretty print
- *
- *        vkbeautify.xml(text [,indent_pattern]);
- *        vkbeautify.json(text [,indent_pattern]);
- *        vkbeautify.css(text [,indent_pattern]);
- *        vkbeautify.sql(text [,indent_pattern]);
- *
- *        @text - String; text to beatufy;
- *        @indent_pattern - Integer | String;
- *                Integer:  number of white spaces;
- *                String:   character string to visualize indentation ( can also be a set of white spaces )
- *   Minify
- *
- *        vkbeautify.xmlmin(text [,preserve_comments]);
- *        vkbeautify.jsonmin(text);
- *        vkbeautify.cssmin(text [,preserve_comments]);
- *        vkbeautify.sqlmin(text);
- *
- *        @text - String; text to minify;
- *        @preserve_comments - Bool; [optional];
- *                Set this flag to true to prevent removing comments from @text ( minxml and mincss functions only. )
- *
- *   Examples:
- *        vkbeautify.xml(text); // pretty print XML
- *        vkbeautify.json(text, 4 ); // pretty print JSON
- *        vkbeautify.css(text, '. . . .'); // pretty print CSS
- *        vkbeautify.sql(text, '----'); // pretty print SQL
- *
- *        vkbeautify.xmlmin(text, true);// minify XML, preserve comments
- *        vkbeautify.jsonmin(text);// minify JSON
- *        vkbeautify.cssmin(text);// minify CSS, remove comments ( default )
- *        vkbeautify.sqlmin(text);// minify SQL
- *
  */
 
 var WebCodeBeauty = (function () {
@@ -107,36 +73,35 @@ var WebCodeBeauty = (function () {
 
     WebCodeBeauty.prototype.xml = function (text, step) {
 
-        var ar = text.replace(/>\s{0,}</g, "><")
+        var ar = text.replace(/>\s*</g, "><")
                         .replace(/</g, "~::~<")
-                        .replace(/\s*xmlns\:/g, "~::~xmlns:")
-                        .replace(/\s*xmlns\=/g, "~::~xmlns=")
+                        .replace(/\s*xmlns:/g, "~::~xmlns:")
+                        .replace(/\s*xmlns=/g, "~::~xmlns=")
                         .split('~::~'),
                 len = ar.length,
                 inComment = false,
                 deep = 0,
                 str = '',
-                ix = 0,
                 shift = step ? createShiftArr(step) : this.shift;
 
-        for (ix = 0; ix < len; ix++) {
+        for (var ix = 0; ix < len; ix++) {
             // start comment or <![CDATA[...]]> or <!DOCTYPE //
             if (ar[ix].search(/<!/) > -1) {
                 str += shift[deep] + ar[ix];
                 inComment = true;
                 // end comment  or <![CDATA[...]]> //
-                if (ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1) {
+                if (ar[ix].search(/-->/) > -1 || ar[ix].search(/]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1) {
                     inComment = false;
                 }
             } else
             // end comment  or <![CDATA[...]]> //
-            if (ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1) {
+            if (ar[ix].search(/-->/) > -1 || ar[ix].search(/]>/) > -1) {
                 str += ar[ix];
                 inComment = false;
             } else
             // <elm></elm> //
             if (/^<\w/.exec(ar[ix - 1]) && /^<\/\w/.exec(ar[ix]) &&
-                    /^<[\w:\-\.\,]+/.exec(ar[ix - 1]) === /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/', '')) {
+                    /^<[\w:\-\.,]+/.exec(ar[ix - 1]) === /^<\/[\w:\-\.,]+/.exec(ar[ix])[0].replace('/', '')) {
                 str += ar[ix];
                 if (!inComment) deep--;
             } else
@@ -161,10 +126,9 @@ var WebCodeBeauty = (function () {
                 str += shift[deep] + ar[ix];
             } else
             // xmlns //
-            if (ar[ix].search(/xmlns\:/) > -1 || ar[ix].search(/xmlns\=/) > -1) {
+            if (ar[ix].search(/xmlns:/) > -1 || ar[ix].search(/xmlns=/) > -1) {
                 str += shift[deep] + ar[ix];
             }
-
             else {
                 str += ar[ix];
             }
@@ -186,13 +150,13 @@ var WebCodeBeauty = (function () {
 
     WebCodeBeauty.prototype.css = function (text, step) {
 
-        var ar = text.replace(/\s{1,}/g, ' ')
-                        .replace(/\{/g, "{~::~")
-                        .replace(/\}/g, "~::~}~::~")
-                        .replace(/\;/g, ";~::~")
-                        .replace(/\/\*/g, "~::~/*")
-                        .replace(/\*\//g, "*/~::~")
-                        .replace(/~::~\s{0,}~::~/g, "~::~")
+        var ar = text.replace(/\s+/g, ' ')
+                        .replace(/\{/g, '{~::~')
+                        .replace(/}/g, '~::~}~::~')
+                        .replace(/;/g, ';~::~')
+                        .replace(/\/\*/g, '~::~/*')
+                        .replace(/\*\//g, '*/~::~')
+                        .replace(/~::~\s*~::~/g, '~::~')
                         .split('~::~'),
                 len = ar.length,
                 deep = 0,
@@ -203,7 +167,7 @@ var WebCodeBeauty = (function () {
 
             if (/\{/.exec(ar[ix])) {
                 str += shift[deep++] + ar[ix];
-            } else if (/\}/.exec(ar[ix])) {
+            } else if (/}/.exec(ar[ix])) {
                 str += shift[--deep] + ar[ix];
             } else if (/\*\\/.exec(ar[ix])) {
                 str += shift[deep] + ar[ix];
@@ -212,18 +176,18 @@ var WebCodeBeauty = (function () {
                 str += shift[deep] + ar[ix];
             }
         }
-        return str.replace(/^\n{1,}/, '');
+        return str.replace(/^\n+/, '');
     };
 
 //----------------------------------------------------------------------------
 
-    function isSubquery(str, parenthesisLevel) {
+    function isSubQuery(str, parenthesisLevel) {
         return parenthesisLevel - (str.replace(/\(/g, '').length - str.replace(/\)/g, '').length );
     }
 
     function split_sql(str, tab) {
 
-        return str.replace(/\s{1,}/g, " ")
+        return str.replace(/\s+/g, " ")
 
                 .replace(/ AND /ig, "~::~" + tab + tab + "AND ")
                 .replace(/ BETWEEN /ig, "~::~" + tab + "BETWEEN ")
@@ -231,24 +195,24 @@ var WebCodeBeauty = (function () {
                 .replace(/ ELSE /ig, "~::~" + tab + "ELSE ")
                 .replace(/ END /ig, "~::~" + tab + "END ")
                 .replace(/ FROM /ig, "~::~FROM ")
-                .replace(/ GROUP\s{1,}BY/ig, "~::~GROUP BY ")
+                .replace(/ GROUP\s+BY/ig, "~::~GROUP BY ")
                 .replace(/ HAVING /ig, "~::~HAVING ")
             //.replace(/ SET /ig," SET~::~")
                 .replace(/ IN /ig, " IN ")
 
                 .replace(/ JOIN /ig, "~::~JOIN ")
-                .replace(/ CROSS~::~{1,}JOIN /ig, "~::~CROSS JOIN ")
-                .replace(/ INNER~::~{1,}JOIN /ig, "~::~INNER JOIN ")
-                .replace(/ LEFT~::~{1,}JOIN /ig, "~::~LEFT JOIN ")
-                .replace(/ RIGHT~::~{1,}JOIN /ig, "~::~RIGHT JOIN ")
+                .replace(/ CROSS~::~+JOIN /ig, "~::~CROSS JOIN ")
+                .replace(/ INNER~::~+JOIN /ig, "~::~INNER JOIN ")
+                .replace(/ LEFT~::~+JOIN /ig, "~::~LEFT JOIN ")
+                .replace(/ RIGHT~::~+JOIN /ig, "~::~RIGHT JOIN ")
 
                 .replace(/ ON /ig, "~::~" + tab + "ON ")
                 .replace(/ OR /ig, "~::~" + tab + tab + "OR ")
-                .replace(/ ORDER\s{1,}BY/ig, "~::~ORDER BY ")
+                .replace(/ ORDER\s+BY/ig, "~::~ORDER BY ")
                 .replace(/ OVER /ig, "~::~" + tab + "OVER ")
 
-                .replace(/\(\s{0,}SELECT /ig, "~::~(SELECT ")
-                .replace(/\)\s{0,}SELECT /ig, ")~::~SELECT ")
+                .replace(/\(\s*SELECT /ig, "~::~(SELECT ")
+                .replace(/\)\s*SELECT /ig, ")~::~SELECT ")
 
                 .replace(/ THEN /ig, " THEN~::~" + tab + "")
                 .replace(/ UNION /ig, "~::~UNION~::~")
@@ -269,25 +233,23 @@ var WebCodeBeauty = (function () {
                 .replace(/ NOT /ig, " NOT ")
                 .replace(/ NULL /ig, " NULL ")
                 .replace(/ LIKE /ig, " LIKE ")
-                .replace(/\s{0,}SELECT /ig, "SELECT ")
-                .replace(/\s{0,}UPDATE /ig, "UPDATE ")
+                .replace(/\s*SELECT /ig, "SELECT ")
+                .replace(/\s*UPDATE /ig, "UPDATE ")
                 .replace(/ SET /ig, " SET ")
 
-                .replace(/~::~{1,}/g, "~::~")
+                .replace(/~::~+/g, "~::~")
                 .split('~::~');
     }
 
     WebCodeBeauty.prototype.sql = function (text, step) {
 
-        var ar_by_quote = text.replace(/\s{1,}/g, " ")
-                        .replace(/\'/ig, "~::~\'")
+        var ar_by_quote = text.replace(/\s+/g, " ")
+                        .replace(/'/ig, "~::~\'")
                         .split('~::~'),
                 len = ar_by_quote.length,
                 ar = [],
                 deep = 0,
-                tab = this.step,//+this.step,
-                inComment = true,
-                inQuote = false,
+                tab = this.step,
                 parenthesisLevel = 0,
                 str = '',
                 ix,
@@ -304,20 +266,20 @@ var WebCodeBeauty = (function () {
         len = ar.length;
         for (ix = 0; ix < len; ix++) {
 
-            parenthesisLevel = isSubquery(ar[ix], parenthesisLevel);
+            parenthesisLevel = isSubQuery(ar[ix], parenthesisLevel);
 
-            if (/\s{0,}\s{0,}SELECT\s{0,}/.exec(ar[ix])) {
-                ar[ix] = ar[ix].replace(/\,/g, ",\n" + tab + tab + '');
+            if (/\s*\s*SELECT\s*/.exec(ar[ix])) {
+                ar[ix] = ar[ix].replace(/,/g, ",\n" + tab + tab + '');
             }
 
-            if (/\s{0,}\s{0,}SET\s{0,}/.exec(ar[ix])) {
-                ar[ix] = ar[ix].replace(/\,/g, ",\n" + tab + tab + '');
+            if (/\s*\s*SET\s*/.exec(ar[ix])) {
+                ar[ix] = ar[ix].replace(/,/g, ",\n" + tab + tab + '');
             }
 
-            if (/\s{0,}\(\s{0,}SELECT\s{0,}/.exec(ar[ix])) {
+            if (/\s*\(\s*SELECT\s*/.exec(ar[ix])) {
                 deep++;
                 str += shift[deep] + ar[ix];
-            } else if (/\'/.exec(ar[ix])) {
+            } else if (/'/.exec(ar[ix])) {
                 if (parenthesisLevel < 1 && deep) {
                     deep--;
                 }
@@ -331,16 +293,16 @@ var WebCodeBeauty = (function () {
             }
         }
 
-        str = str.replace(/^\n{1,}/, '').replace(/\n{1,}/g, "\n");
+        str = str.replace(/^\n+/, '').replace(/\n+/g, "\n");
         return str;
     };
 
 
     WebCodeBeauty.prototype.xmlmin = function (text, preserveComments) {
         var str = preserveComments ? text
-                : text.replace(/<![ \r\n\t]*(--([^\-]|[\r\n]|-[^\-])*--[ \r\n\t]*)\>/g, "")
-                .replace(/[ \r\n\t]{1,}xmlns/g, ' xmlns');
-        return str.replace(/>\s{0,}</g, "><");
+                : text.replace(/<![ \r\n\t]*(--([^\-]|[\r\n]|-[^\-])*--[ \r\n\t]*)>/g, '')
+                .replace(/[ \r\n\t]+xmlns/g, ' xmlns');
+        return str.replace(/>\s*</g, '><');
     };
 
     WebCodeBeauty.prototype.jsonmin = function (text) {
@@ -352,18 +314,18 @@ var WebCodeBeauty = (function () {
 
     WebCodeBeauty.prototype.cssmin = function (text, preserveComments) {
         var str = preserveComments ? text
-                : text.replace(/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g, "");
+                : text.replace(/\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//g, '');
 
-        return str.replace(/\s{1,}/g, ' ')
-                .replace(/\{\s{1,}/g, "{")
-                .replace(/\}\s{1,}/g, "}")
-                .replace(/\;\s{1,}/g, ";")
-                .replace(/\/\*\s{1,}/g, "/*")
-                .replace(/\*\/\s{1,}/g, "*/");
+        return str.replace(/\s+/g, ' ')
+                .replace(/\{\s+/g, "{")
+                .replace(/}\s+/g, "}")
+                .replace(/;\s+/g, ";")
+                .replace(/\/\*\s+/g, "/*")
+                .replace(/\*\/\s+/g, "*/");
     };
 
     WebCodeBeauty.prototype.sqlmin = function (text) {
-        return text.replace(/\s{1,}/g, " ").replace(/\s{1,}\(/, "(").replace(/\s{1,}\)/, ")");
+        return text.replace(/\s+/g, ' ').replace(/\s+\(/, '(').replace(/\s+\)/, ')');
     };
 
     return new WebCodeBeauty();
