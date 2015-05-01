@@ -94,7 +94,7 @@ var WebCodeBeauty = (function () {
         }
 
         var shift = ['\n']; // array of shifts
-        for (ix = 0; ix < 100; ix++) {
+        for (var ix = 0; ix < 100; ix++) {
             shift.push(shift[ix] + space);
         }
         return shift;
@@ -136,12 +136,12 @@ var WebCodeBeauty = (function () {
             } else
             // <elm></elm> //
             if (/^<\w/.exec(ar[ix - 1]) && /^<\/\w/.exec(ar[ix]) &&
-                    /^<[\w:\-\.\,]+/.exec(ar[ix - 1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/', '')) {
+                    /^<[\w:\-\.\,]+/.exec(ar[ix - 1]) === /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/', '')) {
                 str += ar[ix];
                 if (!inComment) deep--;
             } else
             // <elm> //
-            if (ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) == -1 && ar[ix].search(/\/>/) == -1) {
+            if (ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) === -1 && ar[ix].search(/\/>/) === -1) {
                 str = !inComment ? str += shift[deep++] + ar[ix] : str += ar[ix];
             } else
             // <elm>...</elm> //
@@ -170,7 +170,7 @@ var WebCodeBeauty = (function () {
             }
         }
 
-        return (str[0] == '\n') ? str.slice(1) : str;
+        return (str[0] === '\n') ? str.slice(1) : str;
     };
 
     WebCodeBeauty.prototype.json = function (text, step) {
@@ -307,11 +307,11 @@ var WebCodeBeauty = (function () {
             parenthesisLevel = isSubquery(ar[ix], parenthesisLevel);
 
             if (/\s{0,}\s{0,}SELECT\s{0,}/.exec(ar[ix])) {
-                ar[ix] = ar[ix].replace(/\,/g, ",\n" + tab + tab + "")
+                ar[ix] = ar[ix].replace(/\,/g, ",\n" + tab + tab + '');
             }
 
             if (/\s{0,}\s{0,}SET\s{0,}/.exec(ar[ix])) {
-                ar[ix] = ar[ix].replace(/\,/g, ",\n" + tab + tab + "")
+                ar[ix] = ar[ix].replace(/\,/g, ",\n" + tab + tab + '');
             }
 
             if (/\s{0,}\(\s{0,}SELECT\s{0,}/.exec(ar[ix])) {
